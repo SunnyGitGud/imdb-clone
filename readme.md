@@ -1,13 +1,32 @@
-## Architecture
-UI - html/css
-frontend - typescript
-protocol - Http
-Backend - Go
-db - postgresql
-orm - goose + sqlc
+Architecture
+------------
 
-##how to run 
-for dev - install air go install github.com/air-verse/air@latest then run ```air```
-or 
-go run .
+UI: HTML / CSS
+Frontend: TypeScript
+Protocol: HTTP
+Backend: Go
+Database: PostgreSQL
+ORM / Migrations: Goose + SQLC
+
+
+How to Run
+-----------
+
+Development Mode:
+1. Install Air (for live reloading):
+   go install github.com/air-verse/air@latest
+
+2. Run the server:
+   air
+   or
+   go run .
+
+
+Database Setup:
+1. Navigate to the /db-dump-&-populate-script directory.
+
+2. Open the install script and update it with your PostgreSQL connection URL.
+
+3. Run the script to populate the database:
+   go run install
 

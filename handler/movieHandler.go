@@ -2,36 +2,42 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/sunnygitgud/imdb-clone/models"
 	"net/http"
+
+	"github.com/sunnygitgud/imdb-clone/db/gen"
+	"github.com/sunnygitgud/imdb-clone/logger"
 )
 
 type MovieHandler struct {
+	Repo *db.Queries
+	Log  *logger.Logger
+}
+
+func (h *MovieHandler) writeJsonResponse(w http.ResponseWriter, data any) {
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
-	movies := []models.Movies{
-		{
-			ID:          1,
-			TMDB_ID:     1231,
-			Title:       "sunny",
-			ReleaseYear: 2002,
-			Ganre:       []models.Ganre{{ID: 1, Name: "happy"}},
-			Keywords:    []string{},
-			Casting:     []models.Actor{{ID: 1, FirstName: "sunny", LastName: "yadav"}},
-		},
-		{
-			ID:          2,
-			TMDB_ID:     123,
-			Title:       "ankita",
-			ReleaseYear: 2006,
-			Ganre:       []models.Ganre{{ID: 1, Name: "angry"}},
-			Keywords:    []string{},
-			Casting:     []models.Actor{{ID: 1, FirstName: "ankita", LastName: "yadav"}},
-		},
+	ctx := r.Context()
+	movies, err := h.Repo.GetTopMovies(ctx, 10)
+	if err != nil {
+		h.Log.Error("failed to get movies:", err)
+		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
+		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(movies); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	h.writeJsonResponse(w, movies)
+}
+
+func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	movies, err := h.Repo.GetRandomMovies(ctx, 10)
+	if err != nil {
+		h.Log.Error("failed to get movies:", err)
+		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
+		return
 	}
+	h.writeJsonResponse(w, movies)
 }
