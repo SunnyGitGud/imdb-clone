@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/sunnygitgud/imdb-clone/db/gen"
 	"github.com/sunnygitgud/imdb-clone/logger"
 )
@@ -51,4 +52,11 @@ func (h *MovieHandler) GetMovieById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.writeJsonResponse(w, movies)
+}
+
+func (h *MovieHandler) SearchMovie(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	movieId := mux.Vars(r)
+	Id := movieId["id"]
+	movies, err := h.Repo.SearchMovies(ctx, Id)
 }
