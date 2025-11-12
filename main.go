@@ -48,6 +48,7 @@ func main() {
 
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+	http.HandleFunc("/api/movies/id", movieHandler.GetMovieById)
 
 	const addr = ":8080"
 	if err := http.ListenAndServe(addr, nil); err != nil {

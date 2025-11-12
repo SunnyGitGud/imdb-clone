@@ -10,6 +10,37 @@ import (
 	"database/sql"
 )
 
+const getMoviesById = `-- name: GetMoviesById :one
+SELECT id, tmdb_id, title, tagline, release_year, overview, score, popularity, language, poster_url, trailer_url
+		FROM movies
+		WHERE id = $1
+`
+
+func (q *Queries) GetMoviesById(ctx context.Context, id int32) (Movie, error) {
+	row := q.db.QueryRowContext(ctx, getMoviesById, id)
+	var i Movie
+	err := row.Scan(
+		&i.ID,
+		&i.TmdbID,
+		&i.Title,
+		&i.Tagline,
+		&i.ReleaseYear,
+		&i.Overview,
+		&i.Score,
+		&i.Popularity,
+		&i.Language,
+		&i.PosterUrl,
+		&i.TrailerUrl,
+	)
+	if err != nil {
+		return Movie{}, err
+	}
+	if err := q.FetchMoviesRelations(&i); err != nil {
+		return Movie{}, err
+	}
+	return i, err
+}
+
 const getRandomMovies = `-- name: GetRandomMovies :many
 SELECT
   id,

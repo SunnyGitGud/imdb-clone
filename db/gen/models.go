@@ -38,6 +38,9 @@ type Movie struct {
 	Language    sql.NullString
 	PosterUrl   sql.NullString
 	TrailerUrl  sql.NullString
+	Genres      []Genre
+	Actors      []Actor
+	Keywords    []Keyword
 }
 
 type MovieCast struct {

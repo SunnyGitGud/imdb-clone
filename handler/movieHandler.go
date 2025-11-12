@@ -41,3 +41,14 @@ func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeJsonResponse(w, movies)
 }
+
+func (h *MovieHandler) GetMovieById(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	movies, err := h.Repo.GetMoviesById(ctx, 3318)
+	if err != nil {
+		h.Log.Error("failed to get movies:", err)
+		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
+		return
+	}
+	h.writeJsonResponse(w, movies)
+}
