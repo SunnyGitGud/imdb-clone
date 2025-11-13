@@ -82,6 +82,7 @@ func (q *Queries) GetGenresByMovie(ctx context.Context, movieID int32) ([]Genre,
 
 const getKeywordsByMovie = `-- name: GetKeywordsByMovie :many
 SELECT
+	k.id,
   k.word
 FROM keywords k
 JOIN movie_keywords mk ON k.id = mk.keyword_id
@@ -94,14 +95,16 @@ func (q *Queries) GetKeywordsByMovie(ctx context.Context, movieID int32) ([]Keyw
 		return nil, err
 	}
 	defer rows.Close()
-
 	var items []Keyword
 	for rows.Next() {
-		var k Keyword
-		if err := rows.Scan(&k.ID, &k.Word); err != nil {
+		var keyword Keyword
+		if err := rows.Scan(&keyword.ID, &keyword.Word); err != nil {
 			return nil, err
 		}
-		items = append(items, k)
+		items = append(items, keyword)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

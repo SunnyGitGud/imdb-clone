@@ -10,50 +10,42 @@ import (
 )
 
 const searchMovies = `-- name: SearchMovies :many
-SELECT
-  id,
-  tmdb_id,
-  title,
-  tagline,
-  release_year,
-  overview,
-  score,
-  popularity,
-  language,
-  poster_url,
-  trailer_url
+SELECT 
+  id, tmdb_id, title, tagline, release_year, overview, score, 
+  popularity, language, poster_url, trailer_url
 FROM movies
 WHERE (title ILIKE $1 OR overview ILIKE $1)
   AND (
-    $2::int IS NULL OR
-    EXISTS (
-      SELECT 1 FROM movie_genres
-      WHERE movie_id = movies.id AND genre_id = $2
+    $2::int IS NULL OR EXISTS (
+      SELECT 1 FROM movie_genres mg 
+      WHERE mg.movie_id = movies.id AND mg.genre_id = $2
     )
   )
-ORDER BY
-  CASE
-    WHEN $3 = 'score' THEN score
-    WHEN $3 = 'name' THEN title
-    WHEN $3 = 'date' THEN release_year
-    ELSE popularity
-  END DESC
+ORDER BY 
+  CASE 
+    WHEN $3::text = 'score' THEN score
+    WHEN $3::text = 'popularity' THEN popularity
+    ELSE 0
+  END DESC,
+  CASE WHEN $3::text = 'name' THEN title ELSE '' END ASC,
+  CASE WHEN $3::text = 'date' THEN release_year ELSE 0 END DESC,
+  CASE WHEN $3::text IS NULL OR $3::text = '' THEN popularity ELSE 0 END DESC
 LIMIT $4
 `
 
 type SearchMoviesParams struct {
-	Title   string
-	Column2 int32
-	Column3 interface{}
-	Limit   int32
+	SearchTerm  string
+	GenreID     int32
+	OrderBy     string
+	ResultLimit int32
 }
 
 func (q *Queries) SearchMovies(ctx context.Context, arg SearchMoviesParams) ([]Movie, error) {
 	rows, err := q.db.QueryContext(ctx, searchMovies,
-		arg.Title,
-		arg.Column2,
-		arg.Column3,
-		arg.Limit,
+		arg.SearchTerm,
+		arg.GenreID,
+		arg.OrderBy,
+		arg.ResultLimit,
 	)
 	if err != nil {
 		return nil, err
