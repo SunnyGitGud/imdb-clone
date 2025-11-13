@@ -52,6 +52,8 @@ func main() {
 	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
 	http.HandleFunc("/api/genre/", movieHandler.GetMovieGenre)
 
+	http.Handle("/", http.FileServer(http.Dir("public")))
+
 	const addr = ":8080"
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Server has failed %v", err)

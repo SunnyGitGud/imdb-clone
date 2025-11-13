@@ -75,10 +75,10 @@ func (h *MovieHandler) SearchMovies(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	query := r.URL.Query().Get("q")
 	order := r.URL.Query().Get("order")
+	genreStr := r.URL.Query().Get("genre")
 	if order == "" {
 		order = "popularity"
 	}
-	genreStr := r.URL.Query().Get("genre")
 
 	searchPattern := ""
 	if query != "" {

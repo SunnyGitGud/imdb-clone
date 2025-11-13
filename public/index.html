@@ -1,3 +1,58 @@
 <!DOCTYPE html>
-<title>Hello</title>
-<h1>Hello</h1>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReelingIt - Movies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="/styles.css">
+  <meta name="theme-color" content="#56bce8">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="icon" href="/images/icon.png" type="image/png">
+  <script src="app/app.js" type="module" defer></script>
+  <base href="/">
+</head>
+
+<body>
+  <header>
+    <h1><img src="images/logo.png" height="35" alt="URDB"></h1>
+    <nav>
+      <ul>
+        <li><a class="navlink" href="/">Movies</a></li>
+        <li><a class="navlink" href="/account/favorites">Favorites</a></li>
+        <li><a class="navlink" href="/account/Watchlist">Watchlist</a></li>
+        <li><a class="navlink" href="/account/">My Account</a></li>
+      </ul>
+    </nav>
+    <div>
+      <form onsubmit="app.search(event)">
+        <input type="search" placeholder="search movies">
+      </form>
+    </div>
+  </header>
+  <main>
+
+  </main>
+  <template id="template-home">
+    <section class="vertical-scroll" id="top-10">
+      <h2>This week's Top Movies</h2>
+      <ul>
+
+      </ul>
+    </section>
+    <section class="vertical-scroll" id="random">
+      <h2>This week's Top Movies</h2>
+      <ul>
+
+      </ul>
+    </section>
+  </template>
+  <footer>
+    <p>(C) URDB - <a href="https://github.com/SunnyGitGud/imdb-clone">github.com/sunnygitgud</a></p>
+  </footer>
+</body>
+
+</html>
