@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -74,25 +75,44 @@ func (h *MovieHandler) SearchMovies(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	query := r.URL.Query().Get("q")
 	order := r.URL.Query().Get("order")
+	if order == "" {
+		order = "popularity"
+	}
 	genreStr := r.URL.Query().Get("genre")
-	genreID := 0
 
+	searchPattern := ""
+	if query != "" {
+		searchPattern = "%" + query + "%"
+	}
+
+	var genreID sql.NullInt32
 	if genreStr != "" {
-		if g, err := strconv.Atoi(genreStr); err != nil {
-			genreID = g
+		if g, err := strconv.Atoi(genreStr); err == nil {
+			genreID = sql.NullInt32{Int32: int32(g), Valid: true}
 		}
 	}
+
 	var limit int32 = 10
 	param := db.SearchMoviesParams{
-		SearchTerm:  query,
+		SearchTerm:  searchPattern,
 		OrderBy:     order,
-		GenreID:     int32(genreID),
+		GenreID:     genreID, // Changed from int32 to sql.NullInt32
 		ResultLimit: limit,
 	}
 	movies, err := h.Repo.SearchMovies(ctx, param)
 	if err != nil {
 		h.Log.Error("failed to get movies:", err)
 		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
+		return
+	}
+	h.writeJsonResponse(w, movies)
+}
+func (h *MovieHandler) GetMovieGenre(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	movies, err := h.Repo.GetAllGenre(ctx)
+	if err != nil {
+		h.Log.Error("failed to get movies:", err)
+		http.Error(w, "Failed to fetch all genre", http.StatusInternalServerError)
 		return
 	}
 	h.writeJsonResponse(w, movies)

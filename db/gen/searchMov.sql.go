@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 const searchMovies = `-- name: SearchMovies :many
@@ -35,7 +36,7 @@ LIMIT $4
 
 type SearchMoviesParams struct {
 	SearchTerm  string
-	GenreID     int32
+	GenreID     sql.NullInt32
 	OrderBy     string
 	ResultLimit int32
 }
