@@ -11,5 +11,14 @@ window.app = {
         const q = input?.value ?? "";
         console.log("Search query:", q);
     },
-    router: Router
+    router: Router,
+    showError: (message = "There was an error.", goToHome = true) => {
+        document.getElementById("alert-modal").showModal();
+        document.querySelector("#alert-modal p").textContent = message;
+        if (goToHome)
+            window.app.router.go("/");
+    },
+    closeError: () => {
+        document.getElementById("alert-modal").close();
+    }
 };

@@ -8,8 +8,7 @@ export class MovieDetailsPage extends HTMLElement {
     try {
       this.movie = await API.getMovieById(this.id);
     } catch (e) {
-      console.error("Failed to fetch movie:", e);
-      alert("movie does not exist");
+      window.app.showError("Movie ID Invalid")
       return;
     }
 

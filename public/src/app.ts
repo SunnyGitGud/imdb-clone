@@ -15,5 +15,13 @@ window.app = {
 
     console.log("Search query:", q);
   },
-  router: Router
+  router: Router,
+  showError: (message = "There was an error.", goToHome = true) => {
+    (document.getElementById("alert-modal") as HTMLDialogElement).showModal();
+    (document.querySelector("#alert-modal p") as HTMLElement).textContent = message;
+    if (goToHome) window.app.router.go("/")
+  },
+  closeError: () => {
+    (document.getElementById("alert-modal") as HTMLDialogElement).close();
+  }
 }
