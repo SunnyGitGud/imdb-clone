@@ -8,8 +8,7 @@ window.app = {
     search: (event) => {
         event.preventDefault();
         const input = document.querySelector("input[type=search]");
-        const q = input?.value ?? "";
-        console.log("Search query:", q);
+        window.app.router.go("/movies?q=" + input.value);
     },
     router: Router,
     showError: (message = "There was an error.", goToHome = true) => {
@@ -20,5 +19,17 @@ window.app = {
     },
     closeError: () => {
         document.getElementById("alert-modal").close();
+    },
+    searchOrderChange: (order) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get("q");
+        const genre = urlParams.get("genre") ?? "";
+        window.app.router.go(`/movies?q=${q}&order=${order}&genre=${genre}`);
+    },
+    searchFilterChange: (genre) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get("q");
+        const order = urlParams.get("order") ?? "";
+        window.app.router.go(`/movies?q=${q}&order=${order}&genre=${genre}`);
     }
 };

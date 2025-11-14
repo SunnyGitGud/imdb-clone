@@ -8,7 +8,7 @@ export class MovieDetailsPage extends HTMLElement {
             this.movie = await API.getMovieById(this.id);
         }
         catch (e) {
-            window.app.showError("Movie Id invalid");
+            window.app.showError("Movie ID Invalid");
             return;
         }
         const template = document.getElementById("template-movie-details");

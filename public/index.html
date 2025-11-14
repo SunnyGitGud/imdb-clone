@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ReelingIt - Movies</title>
+  <title>URDB - Movies</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <link rel="stylesheet" href="/styles.css">
   <meta name="theme-color" content="#56bce8">
-  <link rel="manifest" href="/app.webmanifest">
+  <link rel="manifest" href="/app.webmanifest?v=2">
   <link rel="icon" href="/images/icon.png" type="image/png">
   <script src="/app/app.js" type="module" defer></script>
   <base href="/">
@@ -70,6 +70,30 @@
       <p id="overview"></p>
       <ul id="cast"></ul>
     </article>
+  </template>
+
+
+  <template id="template-movies">
+    <section>
+      <div id="search-header">
+        <h2></h2>
+        <section id="filters">
+          <select id="filter" onchange="app.searchFilterChange(this.value)">
+            <option>Filter by Genre</option>
+          </select>
+          <select id="order" onchange="app.searchOrderChange(this.value)">
+            <option value="popularity">Sort by Popularity</option>
+            <option value="score">Sort by Score</option>
+            <option value="date">Sort by Release Date</option>
+            <option value="name">Sort by Name</option>
+          </select>
+        </section>
+      </div>
+      <ul id="movies-result">
+        <animated-loading data-elements="5" data-width="150px" data-height="220px">
+        </animated-loading>
+      </ul>
+    </section>
   </template>
   <footer>
     <p>(C) URDB - <a href="https://github.com/SunnyGitGud/imdb-clone">github.com/sunnygitgud</a></p>

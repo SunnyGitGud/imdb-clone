@@ -6,7 +6,9 @@ declare global {
       search: (event: Event) => void;
       router: typeof Router;
       showError: (message?: string, goToHome?: boolean) => void;
-      closeError: () => void
+      closeError: () => void;
+      searchOrderChange: (order: any) => void;
+      searchFilterChange: (genre: any) => void;
     };
   }
 }

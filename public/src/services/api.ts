@@ -8,6 +8,9 @@ export const API = {
   getRandomMovies: async () => {
     return await API.fetch("movies/random");
   },
+  getGenreMovies: async () => {
+    return await API.fetch("genre/");
+  },
 
   getMovieById: async (id: number) => {
     return await API.fetch(`movies/${id}`); // Fixed: was using backtick incorrectly
