@@ -9,7 +9,7 @@ export class MovieItemComponent extends HTMLElement {
 <a href="#">
 <article>
 <img src="${this.movie.PosterUrl.String}" alt="${this.movie.Title} Poster">
-<p>${this.movie.Title} (${this.movie.ReleaseYear})</p>
+<p>${this.movie.Title} (${this.movie.ReleaseYear.Int32})</p>
 </article>
 </a>
 `;
