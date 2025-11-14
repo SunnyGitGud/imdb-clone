@@ -5,7 +5,14 @@ export const Router = {
     window.addEventListener("popstate", () => {
       Router.go(location.pathname, false);
     });
-
+    document.querySelectorAll("a.navlink").forEach(a => {
+      a.addEventListener("click", event => {
+        event.preventDefault()
+        const href = a.getAttribute("href")
+        Router.go(href!)
+      })
+    })
+    //go to initial route
     Router.go(location.pathname + location.search);
   },
 
@@ -37,8 +44,21 @@ export const Router = {
       pageElement = document.createElement("h1") as RouteComponent;
       pageElement.textContent = "Page not found";
     }
-    const main = document.querySelector("main");
-    main!.innerHTML = "";
-    main!.appendChild(pageElement);
+    //Inserting the new page in the UI
+    const oldpage = document.querySelector("main")?.firstElementChild as HTMLElement;
+    if (oldpage) oldpage.style.viewTransitionName = "old"
+    pageElement.style.viewTransitionName = "new"
+
+    if (!document.startViewTransition) {
+      const main = document.querySelector("main");
+      main!.innerHTML = "";
+      main!.appendChild(pageElement);
+    } else {
+      document.startViewTransition(() => {
+        const main = document.querySelector("main");
+        main!.innerHTML = "";
+        main!.appendChild(pageElement);
+      })
+    }
   }
 };

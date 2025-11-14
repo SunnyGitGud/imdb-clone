@@ -1,6 +1,3 @@
-import { AnimatedLoading } from "./components/animatedLoading.js";
-import { HomePage } from "./components/homepage.js";
-import { MovieDetailsPage } from "./components/movieDetailsPage.js";
 import './components/youtubeEmbed.js'
 import { Router } from "./services/Router.js";
 import './components/animatedLoading.js'
