@@ -1,6 +1,7 @@
 import { API } from "../services/api.js"
 
 export class MovieDetailsPage extends HTMLElement {
+  params!: string[];
   id: any
   movie: any
   async render() {
@@ -59,7 +60,7 @@ export class MovieDetailsPage extends HTMLElement {
   }
 
   connectedCallback() {
-    this.id = 14
+    this.id = this.params[0]
     this.render()
   }
 }
