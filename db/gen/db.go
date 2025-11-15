@@ -7,6 +7,8 @@ package db
 import (
 	"context"
 	"database/sql"
+
+	"github.com/sunnygitgud/imdb-clone/logger"
 )
 
 type DBTX interface {
@@ -21,7 +23,8 @@ func New(db DBTX) *Queries {
 }
 
 type Queries struct {
-	db DBTX
+	db  DBTX
+	log *logger.Logger
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {

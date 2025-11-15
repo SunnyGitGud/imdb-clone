@@ -46,11 +46,18 @@ func main() {
 		Log:  logInstance,
 	}
 
+	accountHandler := handler.AccountHandler{
+		Storage: db.New(dbpsql),
+		Logger:  logInstance,
+	}
+
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
 	http.HandleFunc("/api/movies/", movieHandler.GetMovieById)
 	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
 	http.HandleFunc("/api/genre/", movieHandler.GetMovieGenre)
+	http.HandleFunc("/api/account/register", accountHandler.Register)
+	http.HandleFunc("/api/account/login", accountHandler.Authenticate)
 
 	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")

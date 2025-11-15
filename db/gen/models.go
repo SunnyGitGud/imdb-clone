@@ -67,6 +67,8 @@ type User struct {
 	TimeCreated    time.Time
 	TimeConfirmed  sql.NullTime
 	TimeDeleted    sql.NullTime
+	Favorites      []Movie
+	Watchlist      []Movie
 }
 
 type UserMovie struct {
