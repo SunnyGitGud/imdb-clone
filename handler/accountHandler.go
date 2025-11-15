@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
+	"net/http"
+
 	db "github.com/sunnygitgud/imdb-clone/db/gen"
 	"github.com/sunnygitgud/imdb-clone/logger"
-	"net/http"
+	"github.com/sunnygitgud/imdb-clone/token"
 )
 
 // Define request structure
@@ -23,6 +25,7 @@ type AuthRequest struct {
 type AuthResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
+	JWT     string `json:"jwt"`
 }
 
 type AccountHandler struct {
@@ -81,6 +84,10 @@ func (h *AccountHandler) Register(w http.ResponseWriter, r *http.Request) {
 	response := AuthResponse{
 		Success: success,
 		Message: "User registered successfully",
+		JWT: token.CreateJWT(db.User{
+			Email: req.Email,
+			Name:  req.Name,
+		}, *h.Logger),
 	}
 
 	if err := h.writeJSONResponse(w, response); err == nil {
@@ -106,7 +113,10 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 	// Return success response
 	response := AuthResponse{
 		Success: success,
-		Message: "User registered successfully",
+		Message: "User Logged in successfully",
+		JWT: token.CreateJWT(db.User{
+			Email: req.Email,
+		}, *h.Logger),
 	}
 
 	if err := h.writeJSONResponse(w, response); err == nil {
