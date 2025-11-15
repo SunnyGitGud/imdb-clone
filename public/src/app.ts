@@ -79,5 +79,9 @@ window.app = {
     } else {
       window.app.showError(errors.join(". "), false);
     }
+  },
+  logout: () => {
+    window.app.store.jwt = null
+    window.app.router.go("/")
   }
 }

@@ -13,6 +13,7 @@ declare global {
       searchFilterChange: (genre: any) => void;
       register: (event: Event) => void;
       login: (event: Event) => void;
+      logout: () => void;
     };
   }
 }

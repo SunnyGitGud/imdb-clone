@@ -1,4 +1,5 @@
 import { RouteComponent, routes } from "./Routes.js";
+import proxiedStore from "./store.js";
 
 export const Router = {
   init: () => {
@@ -22,11 +23,13 @@ export const Router = {
     }
 
     let pageElement: RouteComponent | null = null;
+    let needsLogin = false
     const routePath = route.includes("?") ? route.split("?")[0] : route;
 
     for (const r of routes) {
       if (typeof r.path === "string" && r.path === routePath) {
         pageElement = new r.component();
+        needsLogin = r.loggedIn === true
         break;
       }
 
@@ -35,8 +38,15 @@ export const Router = {
         if (match) {
           pageElement = new r.component();
           pageElement.params = match.slice(1);
+          needsLogin = r.loggedIn === true
           break;
         }
+      }
+    }
+    if (pageElement) {
+      if (needsLogin && window.app.store.loggedIn == false) {
+        window.app.router.go("/account/login")
+        return
       }
     }
 

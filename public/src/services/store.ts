@@ -22,7 +22,11 @@ const proxiedStore = new Proxy(Store, {
   set: (target, prop, value) => {
     if (prop === "jwt") {
       target[prop] = value as string | null;
-      localStorage.setItem("jwt", value as string);
+      if (value == null) {
+        localStorage.removeItem("jwt")
+      } else {
+        localStorage.setItem("jwt", value as string);
+      }
     }
     return true; // Proxy set trap must return a boolean
   }

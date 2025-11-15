@@ -129,6 +129,14 @@
       </form>
     </section>
   </template>
+  <template id="template-account">
+    <section id="account">
+      <h2>You are Logged In</h2>
+      <button onclick="app.logout()">Log Out</button>
+      <button onclick="app.router.go('/account/favorites')">Your Favorites</button>
+      <button onclick="app.router.go('/account/watchlist')">Your Watchlist</button>
+    </section>
+  </template>
 
 
   <footer>
