@@ -2,6 +2,7 @@ import './components/youtubeEmbed.js';
 import { Router } from "./services/Router.js";
 import './components/animatedLoading.js';
 import { API } from './services/api.js';
+import proxiedStore from './services/store.js';
 window.addEventListener("DOMContentLoaded", event => {
     window.app.router.init();
 });
@@ -12,6 +13,7 @@ window.app = {
         window.app.router.go("/movies?q=" + input.value);
     },
     router: Router,
+    store: proxiedStore,
     showError: (message = "There was an error.", goToHome = false) => {
         document.getElementById("alert-modal").showModal();
         document.querySelector("#alert-modal p").textContent = message;
@@ -51,6 +53,7 @@ window.app = {
         if (errors.length == 0) {
             const resp = await API.register(name, email, password);
             if (resp.success) {
+                window.app.store.jwt = resp.jwt;
                 window.app.router.go("/account/");
             }
             else {
@@ -73,6 +76,7 @@ window.app = {
         if (errors.length == 0) {
             const response = await API.login(email, password);
             if (response.success) {
+                window.app.store.jwt = response.jwt;
                 window.app.router.go("/account/");
             }
             else {
