@@ -9,6 +9,8 @@ declare global {
       closeError: () => void;
       searchOrderChange: (order: any) => void;
       searchFilterChange: (genre: any) => void;
+      register: (event: Event) => void;
+      login: (event: Event) => void;
     };
   }
 }
