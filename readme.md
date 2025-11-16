@@ -1,12 +1,20 @@
-Architecture
-------------
+# Live Demo
+https://imdb-clone-vkbl.onrender.com/
 
-UI: HTML / CSS
-Frontend: TypeScript
-Protocol: HTTP
-Backend: Go
-Database: PostgreSQL
-ORM / Migrations: Goose + SQLC
+---
+
+# Architecture
+
+- **UI:** HTML / CSS  
+- **Frontend:** TypeScript  
+- **Protocol:** HTTP  
+- **Backend:** Go  
+- **Database:** PostgreSQL  
+- **ORM / Migrations:** Goose + SQLC  
+
+![Architecture Diagram](public/images/imdb-architecture.png)
+
+---
 
 
 How to Run
