@@ -38,6 +38,12 @@ export const API = {
       collection
     })
   },
+  deleteFromCollection: async (movieId: any, collection: any) => {
+    return await API.send("account/delete-from-collection", {
+      movie_id: movieId,
+      collection
+    })
+  },
 
   send: async (serviceName: string, data: any) => {
     try {

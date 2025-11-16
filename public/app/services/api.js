@@ -33,6 +33,12 @@ export const API = {
             collection
         });
     },
+    deleteFromCollection: async (movieId, collection) => {
+        return await API.send("account/delete-from-collection", {
+            movie_id: movieId,
+            collection
+        });
+    },
     send: async (serviceName, data) => {
         try {
             const url = API.baseURL + serviceName;

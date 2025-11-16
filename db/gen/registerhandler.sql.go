@@ -173,3 +173,33 @@ func (q *Queries) SaveCollection(user User, movieID int, collection string) (boo
 
 	return true, nil
 }
+
+func (q *Queries) DeleteCollection(user User, movieID int, collection string) (bool, error) {
+	ctx := context.Background()
+
+	if movieID <= 0 {
+		return false, errors.New("Invalid movie ID")
+	}
+
+	if collection != "favorite" && collection != "watchlist" {
+		return false, errors.New("collection must be 'favorite' or 'watchlist")
+	}
+
+	userID, err := q.GetUserIdByEmail(ctx, user.Email)
+	if err == sql.ErrNoRows {
+		return false, ErrUserNotFound
+	}
+	if err != nil {
+		return false, err
+	}
+
+	err = q.DeleteUserMovieRelation(ctx, DeleteUserMovieRelationParams{
+		UserID:       userID,
+		MovieID:      int32(movieID),
+		RelationType: collection,
+	})
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}

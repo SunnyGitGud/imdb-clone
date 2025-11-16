@@ -106,5 +106,27 @@ window.app = {
     } else {
       window.app.router.go("/account/");
     }
-  }
+  },
+  deleteFromCollection: async (movie_id: any, collection: any) => {
+    if (window.app.store.loggedIn) {
+      try {
+        const response = await API.deleteFromCollection(movie_id, collection);
+        if (response.success) {
+          switch (collection) {
+            case "favorite":
+              window.app.router.go("/account/favorites")
+              break;
+            case "watchlist":
+              window.app.router.go("/account/watchlist")
+          }
+        } else {
+          window.app.showError("We couldn't save the movie.")
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    } else {
+      window.app.router.go("/account/");
+    }
+  },
 }

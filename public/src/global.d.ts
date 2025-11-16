@@ -17,6 +17,7 @@ declare global {
       logout: () => void;
       API: typeof API;
       saveToCollection: (movie_id: any, collection: any) => void;
+      deleteFromCollection: (movie_id: any, collection: any) => void;
     };
   }
 }

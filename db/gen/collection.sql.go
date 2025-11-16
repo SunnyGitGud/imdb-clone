@@ -61,3 +61,21 @@ func (q *Queries) InsertUserMovieRelation(ctx context.Context, arg InsertUserMov
 	_, err := q.db.ExecContext(ctx, insertUserMovieRelation, arg.UserID, arg.MovieID, arg.RelationType)
 	return err
 }
+
+const deleteUserMovieRelation = `-- name: DeleteUserMovieRelation :exec
+DELETE FROM user_movies
+WHERE user_id = $1
+  AND movie_id = $2
+  AND relation_type = $3
+`
+
+type DeleteUserMovieRelationParams struct {
+	UserID       int32
+	MovieID      int32
+	RelationType string
+}
+
+func (q *Queries) DeleteUserMovieRelation(ctx context.Context, arg DeleteUserMovieRelationParams) error {
+	_, err := q.db.ExecContext(ctx, deleteUserMovieRelation, arg.UserID, arg.MovieID, arg.RelationType)
+	return err
+}

@@ -67,6 +67,9 @@ func main() {
 	http.Handle("/api/account/save-to-collection",
 		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.SaveToCollection)))
 
+	http.Handle("/api/account/delete-from-collection",
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.DeleteFromCollection)))
+
 	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")
 	}
