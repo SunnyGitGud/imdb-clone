@@ -77,8 +77,11 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("public")))
 
-	const addr = ":8080"
-	if err := http.ListenAndServe(addr, nil); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // fallback for local dev
+	}
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatalf("Server has failed %v", err)
 		logInstance.Error("server failed", err)
 	}
