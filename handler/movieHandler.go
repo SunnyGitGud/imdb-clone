@@ -35,7 +35,7 @@ func (h *MovieHandler) parseID(w http.ResponseWriter, idStr string) (int, bool) 
 
 func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	movies, err := h.Repo.GetTopMovies(ctx, 10)
+	movies, err := h.Repo.GetTopMovies(ctx, 20)
 	if err != nil {
 		h.Log.Error("failed to get movies:", err)
 		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
@@ -46,7 +46,7 @@ func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 
 func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	movies, err := h.Repo.GetRandomMovies(ctx, 10)
+	movies, err := h.Repo.GetRandomMovies(ctx, 20)
 	if err != nil {
 		h.Log.Error("failed to get movies:", err)
 		http.Error(w, "Failed to fetch top movies", http.StatusInternalServerError)
