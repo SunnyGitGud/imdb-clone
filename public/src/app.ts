@@ -16,6 +16,7 @@ window.app = {
   },
   router: Router,
   store: proxiedStore,
+  API: API,
   showError: (message = "There was an error.", goToHome = false) => {
     (document.getElementById("alert-modal") as HTMLDialogElement).showModal();
     (document.querySelector("#alert-modal p") as HTMLElement).textContent = message;
@@ -83,5 +84,27 @@ window.app = {
   logout: () => {
     window.app.store.jwt = null
     window.app.router.go("/")
+  },
+  saveToCollection: async (movie_id: any, collection: any) => {
+    if (window.app.store.loggedIn) {
+      try {
+        const response = await API.saveToCollection(movie_id, collection);
+        if (response.success) {
+          switch (collection) {
+            case "favorite":
+              window.app.router.go("/account/favorites")
+              break;
+            case "watchlist":
+              window.app.router.go("/account/watchlist")
+          }
+        } else {
+          window.app.showError("We couldn't save the movie.")
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    } else {
+      window.app.router.go("/account/");
+    }
   }
 }

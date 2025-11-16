@@ -21,35 +21,55 @@ export const API = {
     login: async (email, password) => {
         return await API.send("account/login", { email, password });
     },
+    getFavorites: async () => {
+        return await API.fetch("account/favorites");
+    },
+    getWatchlist: async () => {
+        return await API.fetch("account/watchlist");
+    },
+    saveToCollection: async (movieId, collection) => {
+        return await API.send("account/save-to-collection", {
+            movie_id: movieId,
+            collection
+        });
+    },
     send: async (serviceName, data) => {
         try {
             const url = API.baseURL + serviceName;
+            const headers = {
+                "Content-Type": "application/json",
+            };
+            if (window.app.store.jwt) {
+                headers.Authorization = `Bearer ${window.app.store.jwt}`;
+            }
             const resp = await fetch(url, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
+                headers,
+                body: JSON.stringify(data),
             });
-            const res = await resp.json();
-            return res;
+            return await resp.json();
         }
         catch (e) {
             console.error(e);
-            throw e; // Re-throw so calling code knows it failed
+            throw e;
         }
     },
     fetch: async (serviceName, args) => {
         try {
             const queryString = args ? new URLSearchParams(args).toString() : "";
             const url = API.baseURL + serviceName + (queryString ? "?" + queryString : "");
-            const resp = await fetch(url);
-            const res = await resp.json();
-            return res;
+            const headers = {};
+            if (window.app.store.jwt) {
+                headers.Authorization = `Bearer ${window.app.store.jwt}`;
+            }
+            const resp = await fetch(url, {
+                headers,
+            });
+            return await resp.json();
         }
         catch (e) {
             console.error(e);
-            throw e; // Re-throw so calling code knows it failed
+            throw e;
         }
     }
 };

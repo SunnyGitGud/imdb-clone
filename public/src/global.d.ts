@@ -1,3 +1,4 @@
+import { API } from "./services/api";
 import { Router } from "./services/Router";
 import proxiedStore from "./services/store";
 
@@ -14,6 +15,8 @@ declare global {
       register: (event: Event) => void;
       login: (event: Event) => void;
       logout: () => void;
+      API: typeof API;
+      saveToCollection: (movie_id: any, collection: any) => void;
     };
   }
 }
