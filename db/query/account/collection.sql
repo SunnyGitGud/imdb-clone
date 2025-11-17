@@ -25,3 +25,10 @@ WHERE user_id = $1
   AND movie_id = $2
   AND relation_type = $3;
 
+
+-- name: GetUserMovieRelations :many
+SELECT user_id, movie_id, relation_type, time_added
+FROM user_movies
+WHERE user_id = $1
+  AND movie_id = $2;
+

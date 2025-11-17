@@ -203,3 +203,27 @@ func (q *Queries) DeleteCollection(user User, movieID int, collection string) (b
 	}
 	return true, nil
 }
+
+func (q *Queries) ReturnUserMovieRelation(user User, movieID int) ([]UserMovie, error) {
+	ctx := context.Background()
+	if movieID <= 0 {
+		return []UserMovie{}, errors.New("Invalid MovieID")
+	}
+	userID, err := q.GetUserIdByEmail(ctx, user.Email)
+	if err == sql.ErrNoRows {
+		return []UserMovie{}, ErrUserNotFound
+	}
+	if err != nil {
+		return []UserMovie{}, err
+	}
+
+	userMovie, err := q.GetUserMovieRelations(ctx, GetUserMovieRelationsParams{
+		UserID:  userID,
+		MovieID: int32(movieID),
+	})
+	if err != nil {
+		return []UserMovie{}, err
+	}
+
+	return userMovie, nil
+}

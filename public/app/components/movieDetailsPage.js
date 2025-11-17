@@ -11,6 +11,7 @@ export class MovieDetailsPage extends HTMLElement {
             window.app.showError("Movie ID Invalid");
             return;
         }
+        await API.getUserMovieRelation(this.id);
         const template = document.getElementById("template-movie-details");
         const content = template.content.cloneNode(true);
         this.appendChild(content);

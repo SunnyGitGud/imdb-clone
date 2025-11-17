@@ -79,3 +79,43 @@ func (q *Queries) DeleteUserMovieRelation(ctx context.Context, arg DeleteUserMov
 	_, err := q.db.ExecContext(ctx, deleteUserMovieRelation, arg.UserID, arg.MovieID, arg.RelationType)
 	return err
 }
+
+const getUserMovieRelations = `-- name: GetUserMovieRelations :many
+SELECT user_id, movie_id, relation_type, time_added
+FROM user_movies
+WHERE user_id = $1
+  AND movie_id = $2
+`
+
+type GetUserMovieRelationsParams struct {
+	UserID  int32
+	MovieID int32
+}
+
+func (q *Queries) GetUserMovieRelations(ctx context.Context, arg GetUserMovieRelationsParams) ([]UserMovie, error) {
+	rows, err := q.db.QueryContext(ctx, getUserMovieRelations, arg.UserID, arg.MovieID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []UserMovie
+	for rows.Next() {
+		var i UserMovie
+		if err := rows.Scan(
+			&i.UserID,
+			&i.MovieID,
+			&i.RelationType,
+			&i.TimeAdded,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

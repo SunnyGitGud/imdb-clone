@@ -70,6 +70,9 @@ func main() {
 	http.Handle("/api/account/delete-from-collection",
 		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.DeleteFromCollection)))
 
+	http.Handle("/api/account/check-relation",
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetUserMovieRelation)))
+
 	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")
 	}

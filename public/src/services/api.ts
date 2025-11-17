@@ -45,6 +45,12 @@ export const API = {
     })
   },
 
+  getUserMovieRelation: async (movieid: any) => {
+    return await API.send("account/check-relation", {
+      movie_id: movieid
+    })
+  },
+
   send: async (serviceName: string, data: any) => {
     try {
       const url = API.baseURL + serviceName;

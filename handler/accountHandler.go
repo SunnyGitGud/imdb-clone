@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -227,6 +228,46 @@ func (h *AccountHandler) DeleteFromCollection(w http.ResponseWriter, r *http.Req
 	if err := h.writeJSONResponse(w, response); err != nil {
 		h.Logger.Info("successfully deleted movie")
 	}
+}
+
+func (h *AccountHandler) GetUserMovieRelation(w http.ResponseWriter, r *http.Request) {
+	type movieRequest struct {
+		MovieID string `json:"movie_id"`
+	}
+
+	var req movieRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body bla bla", http.StatusBadGateway)
+		return
+	}
+	movieID, err := strconv.Atoi(req.MovieID)
+	email, ok := r.Context().Value("email").(string)
+	if !ok {
+		http.Error(w, "Unable to retrieve email", http.StatusInternalServerError)
+		return
+	}
+
+	UserMovieRelation, err := h.Storage.ReturnUserMovieRelation(db.User{Email: email}, movieID)
+	if err != nil {
+		http.Error(w, "Error retrieving user movie relations", http.StatusInternalServerError)
+	}
+	type UserRelationResponse struct {
+		Favorite  bool `json:"favorite"`
+		Watchlist bool `json:"watchlist"`
+	}
+
+	response := UserRelationResponse{}
+
+	for _, r := range UserMovieRelation {
+		switch r.RelationType {
+		case "favorite":
+			response.Favorite = true
+		case "watchlist":
+			response.Watchlist = true
+		}
+	}
+
+	h.writeJSONResponse(w, response)
 }
 
 func (h *AccountHandler) AuthMiddleware(next http.Handler) http.Handler {
