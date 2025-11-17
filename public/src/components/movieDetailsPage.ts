@@ -11,7 +11,6 @@ export class MovieDetailsPage extends HTMLElement {
       window.app.showError("Movie ID Invalid")
       return;
     }
-    await API.getUserMovieRelation(this.id)
     const template = document.getElementById("template-movie-details") as HTMLTemplateElement;
     const content = template.content.cloneNode(true);
     this.appendChild(content);
@@ -47,6 +46,35 @@ export class MovieDetailsPage extends HTMLElement {
     this.querySelector("#actions #btnWatchlist")?.addEventListener("click", () => {
       window.app.saveToCollection(this.movie.ID, "watchlist")
     })
+
+    try {
+      const relation = await API.getUserMovieRelation(this.id);
+      this.updateButtonStates(relation);
+    } catch (e) {
+      console.error("Error fetching user movie relation:", e);
+    }
+  }
+
+  updateButtonStates(relation: { favorite: boolean; watchlist: boolean }) {
+    const btnFavorites = this.querySelector("#btnFavorites") as HTMLButtonElement;
+    const btnWatchlist = this.querySelector("#btnWatchlist") as HTMLButtonElement;
+
+    if (relation.favorite) {
+      btnFavorites.style.backgroundColor = "#56bce8";
+      btnFavorites.textContent = "Browse Favorites";
+    } else {
+      btnFavorites.style.backgroundColor = ""; // Reset to CSS default
+      btnFavorites.textContent = "Add to Favorites";
+    }
+
+    if (relation.watchlist) {
+      btnWatchlist.style.backgroundColor = "#56bce8";
+      btnWatchlist.textContent = "Browse Watchlist";
+    } else {
+      btnWatchlist.style.backgroundColor = ""; // Reset to CSS default
+      btnWatchlist.textContent = "Add to Watchlist";
+    }
+
     const ulCast = this.querySelector("#cast") as HTMLUListElement;
     ulCast.innerHTML = "";
     this.movie.Actors?.forEach((actor: any) => {
