@@ -2,7 +2,6 @@
 -- PostgreSQL database dump
 --
 
-
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 18.0
 
@@ -152,6 +151,19 @@ CREATE TABLE public.movies (
 
 
 --
+-- Name: pending_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pending_users (
+    email text NOT NULL,
+    hashed_password text NOT NULL,
+    otp text NOT NULL,
+    otp_expires timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT now()
+);
+
+
+--
 -- Name: user_movies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -246,6 +258,14 @@ ALTER TABLE ONLY public.movie_keywords
 
 ALTER TABLE ONLY public.movies
     ADD CONSTRAINT movies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pending_users pending_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pending_users
+    ADD CONSTRAINT pending_users_pkey PRIMARY KEY (email);
 
 
 --

@@ -71,6 +71,14 @@ type User struct {
 	Watchlist      []Movie
 }
 
+type PendingUser struct {
+	Email          string       `json:"email"`
+	HashedPassword string       `json:"hashed_password"`
+	Otp            string       `json:"otp"`
+	OtpExpires     time.Time    `json:"otp_expires"`
+	CreatedAt      sql.NullTime `json:"created_at"`
+}
+
 type UserMovie struct {
 	UserID       int32
 	MovieID      int32
