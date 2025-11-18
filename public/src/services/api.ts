@@ -13,7 +13,11 @@ export const API = {
   },
 
   getMovieById: async (id: number) => {
-    return await API.fetch(`movies/${id}`); // Fixed: was using backtick incorrectly
+    return await API.fetch(`movies/${id}`);
+  },
+
+  getMovieByActorsId: async (id: number) => {
+    return await API.fetch(`actors/${id}`);
   },
 
   searchMovies: async (q: string, order: string, genre: string) => {

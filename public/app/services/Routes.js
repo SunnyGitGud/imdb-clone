@@ -6,6 +6,7 @@ import { LoginPage } from "../components/loginPage.js";
 import { AccountPage } from "../components/accountPage.js";
 import { FavoritePage } from "../components/favoritePage.js";
 import { WatchlistPage } from "../components/watchlistPage.js";
+import { ActorsDetailsPage } from "../components/actorsPage.js";
 export const routes = [
     {
         path: "/",
@@ -14,6 +15,10 @@ export const routes = [
     {
         path: /\/movies\/(\d+)/,
         component: MovieDetailsPage
+    },
+    {
+        path: /\/actors\/(\d+)/,
+        component: ActorsDetailsPage
     },
     {
         path: "/movies",

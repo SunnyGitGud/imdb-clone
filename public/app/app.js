@@ -3,6 +3,7 @@ import { Router } from "./services/Router.js";
 import './components/animatedLoading.js';
 import { API } from './services/api.js';
 import proxiedStore from './services/store.js';
+import './components/accountPage.js';
 window.addEventListener("DOMContentLoaded", event => {
     window.app.router.init();
 });

@@ -1,5 +1,4 @@
 import { RouteComponent, routes } from "./Routes.js";
-import proxiedStore from "./store.js";
 
 export const Router = {
   init: () => {

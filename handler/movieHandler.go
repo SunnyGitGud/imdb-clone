@@ -117,3 +117,20 @@ func (h *MovieHandler) GetMovieGenre(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeJsonResponse(w, movies)
 }
+
+func (h *MovieHandler) GetMovieByActors(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	idStr := r.URL.Path[len("/api/actors/"):]
+	id, ok := h.parseID(w, idStr)
+	if !ok {
+		return
+	}
+	movies, err := h.Repo.GetMoviesByActorId(ctx, int32(id))
+	if err != nil {
+		h.Log.Error("failed to get actors:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	h.writeJsonResponse(w, movies)
+
+}

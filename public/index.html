@@ -52,6 +52,24 @@
     </section>
   </template>
 
+  <template id="template-actor-details">
+    <article id="actor">
+      <header id="actor-header">
+        <img id="actor-image" src="" alt="Actor image" width="300px">
+        <h2 id="actor-name">
+          <animated-loading elements="2"></animated-loading>
+        </h2>
+      </header>
+      <section id="actor-movies">
+        <h3>Movies</h3>
+        <ul id="movies-result"> <animated-loading data-elements="5" data-width="150px" data-height="220px">
+          </animated-loading>
+        </ul>
+      </section>
+    </article>
+  </template>
+
+
   <template id="template-movie-details">
     <article id="movie">
       <h2><animated-loading elements="2"></animated-loading></h2>

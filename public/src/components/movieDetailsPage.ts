@@ -82,10 +82,12 @@ export class MovieDetailsPage extends HTMLElement {
       const imageUrl = actor.ImageUrl?.String || actor.image_url || '/images/generic_actor.jpg';
       const firstName = actor.FirstName || actor.first_name || '';
       const lastName = actor.LastName || actor.last_name || '';
+      const actorID = actor.ID
+      const actorUrl = "/actors/" + actorID
 
       li.innerHTML = `
-    <img src="${imageUrl}" alt="Picture of ${lastName}">
-    <p>${firstName} ${lastName}</p>
+    <img href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" alt="Picture of ${lastName}">
+    <p href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" >${firstName} ${lastName}</p>
   `;
       ulCast.appendChild(li);
     });

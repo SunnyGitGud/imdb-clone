@@ -54,7 +54,7 @@ export class MovieDetailsPage extends HTMLElement {
         const btnFavorites = this.querySelector("#btnFavorites");
         const btnWatchlist = this.querySelector("#btnWatchlist");
         if (relation.favorite) {
-            btnFavorites.style.backgroundColor = "#66ADFF";
+            btnFavorites.style.backgroundColor = "#56bce8";
             btnFavorites.textContent = "Browse Favorites";
         }
         else {
@@ -62,7 +62,7 @@ export class MovieDetailsPage extends HTMLElement {
             btnFavorites.textContent = "Add to Favorites";
         }
         if (relation.watchlist) {
-            btnWatchlist.style.backgroundColor = "#66ADFF";
+            btnWatchlist.style.backgroundColor = "#56bce8";
             btnWatchlist.textContent = "Browse Watchlist";
         }
         else {
@@ -76,9 +76,11 @@ export class MovieDetailsPage extends HTMLElement {
             const imageUrl = actor.ImageUrl?.String || actor.image_url || '/images/generic_actor.jpg';
             const firstName = actor.FirstName || actor.first_name || '';
             const lastName = actor.LastName || actor.last_name || '';
+            const actorID = actor.ID;
+            const actorUrl = "/actors/" + actorID;
             li.innerHTML = `
-    <img src="${imageUrl}" alt="Picture of ${lastName}">
-    <p>${firstName} ${lastName}</p>
+    <img href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" alt="Picture of ${lastName}">
+    <p href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" >${firstName} ${lastName}</p>
   `;
             ulCast.appendChild(li);
         });
