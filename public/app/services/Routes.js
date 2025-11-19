@@ -14,7 +14,7 @@ export const routes = [
     },
     {
         path: /\/movies\/(\d+)/,
-        component: MovieDetailsPage
+        component: MovieDetailsPage,
     },
     {
         path: /\/actors\/(\d+)/,

@@ -23,7 +23,7 @@ export const routes: Route[] = [
   },
   {
     path: /\/movies\/(\d+)/,
-    component: MovieDetailsPage
+    component: MovieDetailsPage,
   },
   {
     path: /\/actors\/(\d+)/,

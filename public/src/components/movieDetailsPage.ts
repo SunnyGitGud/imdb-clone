@@ -47,6 +47,23 @@ export class MovieDetailsPage extends HTMLElement {
       window.app.saveToCollection(this.movie.ID, "watchlist")
     })
 
+    const ulCast = this.querySelector("#cast") as HTMLUListElement;
+    ulCast.innerHTML = "";
+    this.movie.Actors?.forEach((actor: any) => {
+      const li = document.createElement("li");
+      const imageUrl = actor.ImageUrl?.String || actor.image_url || '/images/generic_actor.jpg';
+      const firstName = actor.FirstName || actor.first_name || '';
+      const lastName = actor.LastName || actor.last_name || '';
+      const actorID = actor.ID
+      const actorUrl = "/actors/" + actorID
+
+      li.innerHTML = `
+    <img href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" alt="Picture of ${lastName}">
+    <p href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" >${firstName} ${lastName}</p>
+  `;
+      ulCast.appendChild(li);
+    });
+
     try {
       const relation = await API.getUserMovieRelation(this.id);
       this.updateButtonStates(relation);
@@ -75,22 +92,6 @@ export class MovieDetailsPage extends HTMLElement {
       btnWatchlist.textContent = "Add to Watchlist";
     }
 
-    const ulCast = this.querySelector("#cast") as HTMLUListElement;
-    ulCast.innerHTML = "";
-    this.movie.Actors?.forEach((actor: any) => {
-      const li = document.createElement("li");
-      const imageUrl = actor.ImageUrl?.String || actor.image_url || '/images/generic_actor.jpg';
-      const firstName = actor.FirstName || actor.first_name || '';
-      const lastName = actor.LastName || actor.last_name || '';
-      const actorID = actor.ID
-      const actorUrl = "/actors/" + actorID
-
-      li.innerHTML = `
-    <img href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" alt="Picture of ${lastName}">
-    <p href="${actorUrl}" onclick="event.preventDefault(); app.router.go('${actorUrl}')" src="${imageUrl}" >${firstName} ${lastName}</p>
-  `;
-      ulCast.appendChild(li);
-    });
   }
 
   connectedCallback() {
